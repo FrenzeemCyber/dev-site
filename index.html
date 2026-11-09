@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frenzeem | Fullstack Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ОБЩИЕ НАСТРОЙКИ И ПЕРЕМЕННЫЕ --- */
+        :root {
+            --bg-dark: #050505;
+            --bg-panel: #0a1f0a;
+            --neon-green: #00ff41;
+            --neon-glow: rgba(0, 255, 65, 0.6);
+            --text-light: #ffffff;
+            --text-muted: #cccccc;
+            --font-main: 'Rajdhani', sans-serif;
+            --font-tech: 'Orbitron', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* --- ШАПКА И НАВИГАЦИЯ --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-family: var(--font-tech);
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-glow);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--neon-green);
+            background: rgba(0, 255, 65, 0.1);
+            text-shadow: 0 0 8px var(--neon-glow);
+        }
+
+        /* --- СЕКЦИИ САЙТА --- */
+        section {
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-family: var(--font-tech);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            margin-bottom: 3rem;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-glow);
+        }
+
+        /* --- HERO SECTION (Главная) --- */
+        #hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: radial-gradient(circle at center, var(--bg-panel) 0%, var(--bg-dark) 70%);
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-tech);
+            font-size: clamp(3rem, 10vw, 6rem);
+            line-height: 1.1;
+            color: transparent;
+            -webkit-text-stroke: 1.5px var(--neon-green);
+            text-shadow: 0 0 20px var(--neon-glow);
+        }
+
+        .hero-content p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-top: 1rem;
+            color: var(--text-muted);
+        }
+
+        .cta-button {
+            display: inline-block;
+            margin-top: 2.5rem;
+            background: linear-gradient(90deg, #00cc33, var(--neon-green));
+            color: var(--bg-dark);
+            text-decoration: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px var(--neon-glow);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--neon-glow);
+        }
+
+        /* --- SKILLS SECTION (Навыки) --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: rgba(0, 20, 0, 0.5);
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .skill-card h3 {
+            font-family: var(--font-tech);
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-card ul {
+            list-style: none;
+            color: var(--text-muted);
+        }
+        
+        .skill-card li::before {
+            content: "✓ ";
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        /* --- SERVICES SECTION (Услуги) --- */
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-item {
+            text-align: center;
+            padding: 2rem;
+            border: 1px dashed rgba(0, 255, 65, 0.3);
+            border-radius: 10px;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 15px var(--neon-glow);
+        }
+
+        /* --- CONTACTS SECTION (Контакты) --- */
+        #contacts {
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .telegram-handle {
+            font-family: var(--font-tech);
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            text-decoration: none;
+            text-shadow: 0 0 15px var(--neon-glow);
+            transition: all 0.3s ease;
+        }
+
+        .telegram-handle:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 25px var(--neon-glow);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ --- */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">FZ</div>
+                <ul class="nav-links">
+                    <li><a href="#hero" class="nav-link active">Главная</a></li>
+                    <li><a href="#skills" class="nav-link">Навыки</a></li>
+                    <li><a href="#services" class="nav-link">Услуги</a></li>
+                    <li><a href="#contacts" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero">
+            <div class="container hero-content">
+                <h1>FULLSTACK<br>DEVELOPER</h1>
+                <p>Middle Level • Принимаю заказы</p>
+                <a href="https://t.me/frenzeem" target="_blank" class="cta-button">Обсудить проект →</a>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills">
+            <div class="container">
+                <h2 class="section-title">Мой стек технологий</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>Frontend</h3>
+                        <ul>
+                            <li>React.js / Next.js</li>
+                            <li>TypeScript</li>
+                            <li>Redux Toolkit / Zustand</li>
+                            <li>Tailwind CSS / SCSS</li>
+                        </ul>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Backend</h3>
+                        <ul>
+                            <li>Node.js / Express.js</li>
+                            <li>NestJS</li>
+                            <li>RESTful API & GraphQL</li>
+                            <li>WebSocket</li>
+                        </ul>
+                    </div>
+                    <div class="skill-card">
+                        <h3>Базы данных и DevOps</h3>
+                        <ul>
+                            <li>PostgreSQL / MongoDB</li>
+                            <li>Docker / Docker Compose</li>
+                            <li>CI/CD (GitHub Actions)</li>
+                            <li>Linux (Ubuntu Server)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section id="services">
+            <div class="container">
+                <h2 class="section-title">Что я могу для вас сделать?</h2>
+                <div class="services-list">
+                    <div class="service-item">
+                        <div class="service-icon">🌐</div>
+                        <h3>Веб-приложения под ключ</h3>
+                        <p>Разработка современных SPA и SSR приложений на React/Next.js с нуля до деплоя.</p>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">🔗</div>
+                        <h3>API и Интеграции</h3>
+                        <p>Создание надежных backend-сервисов на Node.js/NestJS, интеграция с платежными системами и сторонними API.</p>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-icon">⚙️</div>
+                        <h3>Поддержка и развитие</h3>
+                        <p>Рефакторинг legacy-кода, добавление нового функционала, оптимизация производительности существующих проектов.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACTS SECTION -->
+        <section id="contacts">
+            <div class="container contact-info">
+                <h2 class="section-title">Готов обсудить ваш проект?</h2>
+                <p>Лучший способ связаться со мной — написать в Telegram.</p>
+                <a href="https://t.me/frenzeem" target="_blank" class="telegram-handle">@frenzeem</a>
+                <div class="badges-container" style="margin-top: 2rem;">
+                    <span class="badge">5+ Лет опыта</span>
+                    <span class="badge">50+ Проектов</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Frenzeem. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Плавная прокрутка при клике на ссылки в навигации
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Обновляем активную ссылку в меню
+                    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Анимация появления секций при скролле
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Секция считается видимой, когда она видна на 10%
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Больше не следим за этой секцией
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+</body>
+</html>
